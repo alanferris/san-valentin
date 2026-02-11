@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti, Camila</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@300;400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a1e 0%, #2d1233 30%, #1a0a2e 60%, #0d0515 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Corazones flotantes */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -60px;
+            opacity: 0;
+            animation: floatUp linear infinite;
+            font-size: 20px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg) scale(0.5);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-110vh) rotate(720deg) scale(1.2);
+            }
+        }
+
+        /* Partículas brillantes */
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #ff69b4;
+            border-radius: 50;
+            animation: sparkle 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Tarjeta principal */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 105, 180, 0.15);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow:
+                0 0 60px rgba(255, 105, 180, 0.1),
+                0 0 120px rgba(255, 20, 80, 0.05),
+                inset 0 0 60px rgba(255, 105, 180, 0.03);
+            animation: cardAppear 1.5s ease-out;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #ff69b4, #c71585, #ff69b4);
+            background-size: 400% 400%;
+            border-radius: 31px;
+            z-index: -1;
+            animation: borderGlow 4s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Corazón principal animado */
+        .main-heart {
+            font-size: 80px;
+            display: inline-block;
+            animation: heartbeat 1.2s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.6));
+            margin-bottom: 10px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
+        }
+
+        .subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(255, 182, 213, 0.7);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 52px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff9ec4, #ff1493, #ff69b4);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .question {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #fff;
+            margin: 25px 0;
+            line-height: 1.5;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+        }
+
+        .message {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.8;
+            margin-bottom: 35px;
+            padding: 0 10px;
+        }
+
+        /* Botones */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            box-shadow: 0 4px 25px rgba(255, 20, 147, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 35px rgba(255, 20, 147, 0.6);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            padding: 10px 25px;
+        }
+
+        /* Pantalla de respuesta SÍ */
+        .response-screen {
+            display: none;
+            animation: cardAppear 0.8s ease-out;
+        }
+
+        .response-screen .celebration-heart {
+            font-size: 100px;
+            display: inline-block;
+            animation: heartbeat 1s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.8));
+        }
+
+        .response-screen h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 42px;
+            background: linear-gradient(135deg, #ff9ec4, #ff1493, #ff69b4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+
+        .response-screen p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        /* Footer sutil */
+        .footer {
+            position: fixed;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.15);
+            font-family: 'Poppins', sans-serif;
+            z-index: 5;
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                padding: 40px 25px;
+            }
+            .name {
+                font-size: 42px;
+            }
+            .question {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="card">
+        <!-- Pantalla de pregunta -->
+        <div class="question-screen" id="questionScreen">
+            <div class="main-heart">&#10084;&#65039;</div>
+            <div class="subtitle">14 de febrero</div>
+            <div class="name">Camila</div>
+            <div class="question">
+                &iquest;Quieres ser mi<br>San Valent&iacute;n?
+            </div>
+            <p class="message">
+                Cada d&iacute;a a tu lado es especial, pero hoy quiero
+                record&aacute;rtelo de una forma diferente.
+            </p>
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="sayYes()">S&iacute;, quiero &#10084;&#65039;</button>
+                <button class="btn btn-no" id="btnNo">No</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de respuesta -->
+        <div class="response-screen" id="responseScreen">
+            <div class="celebration-heart">&#128151;</div>
+            <h2>&iexcl;Sab&iacute;a que dir&iacute;as que s&iacute;!</h2>
+            <p>
+                Te quiero much&iacute;simo, Camila. &#10084;&#65039;<br>
+                Este 14 de febrero y todos los d&iacute;as<br>
+                eres lo m&aacute;s bonito de mi vida.
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">Hecho con amor por Alan &#10084;&#65039;</div>
+
+    <script>
+        // Crear corazones flotantes
+        function createFloatingHearts() {
+            const container = document.getElementById('heartsBg');
+            const hearts = ['\u2764\ufe0f', '\ud83e\ude77', '\ud83d\udc95', '\ud83d\udc96', '\ud83d\udc97', '\u2665\ufe0f', '\ud83d\udc9d'];
+
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('span');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 18 + 12) + 'px';
+                heart.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                heart.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Crear partículas brillantes
+        function createSparkles() {
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.background = ['#ff69b4', '#ff1493', '#ffb6c1', '#fff'][Math.floor(Math.random() * 4)];
+                document.body.appendChild(sparkle);
+            }
+        }
+
+        // Botón "No" que se escapa
+        const btnNo = document.getElementById('btnNo');
+        let noAttempts = 0;
+        const messages = [
+            '\u00bfSegura? \ud83e\udd7a',
+            'Piensa otra vez...',
+            '\u00a1No me hagas esto!',
+            '\ud83d\ude22\ud83d\ude22\ud83d\ude22',
+            'Imposible decir no',
+        ];
+
+        btnNo.addEventListener('mouseover', function() {
+            if (noAttempts < 5) {
+                this.textContent = messages[noAttempts];
+                noAttempts++;
+            }
+
+            const maxX = window.innerWidth - this.offsetWidth - 20;
+            const maxY = window.innerHeight - this.offsetHeight - 20;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+
+            this.style.position = 'fixed';
+            this.style.left = newX + 'px';
+            this.style.top = newY + 'px';
+            this.style.zIndex = '9999';
+            this.style.transition = 'all 0.2s ease';
+        });
+
+        // Respuesta SÍ
+        function sayYes() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('responseScreen').style.display = 'block';
+
+            // Explosión de corazones
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('span');
+                    heart.className = 'floating-heart';
+                    heart.textContent = ['\u2764\ufe0f', '\ud83d\udc96', '\ud83d\udc95', '\ud83e\ude77'][Math.floor(Math.random() * 4)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.fontSize = (Math.random() * 24 + 16) + 'px';
+                    heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                    heart.style.animationDelay = '0s';
+                    document.getElementById('heartsBg').appendChild(heart);
+                }, i * 80);
+            }
+
+            // Esconder el botón No si anda suelto
+            btnNo.style.display = 'none';
+        }
+
+        createFloatingHearts();
+        createSparkles();
+    </script>
+
+</body>
+</html>
