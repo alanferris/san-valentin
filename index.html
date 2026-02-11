@@ -79,6 +79,7 @@
         .card {
             position: relative;
             z-index: 10;
+            overflow: hidden;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 105, 180, 0.15);
@@ -367,21 +368,29 @@
         ];
 
         btnNo.addEventListener('mouseover', function() {
-            if (noAttempts < 5) {
-                this.textContent = messages[noAttempts];
-                noAttempts++;
-            }
+            this.textContent = messages[noAttempts % messages.length];
+            noAttempts++;
 
-            const maxX = window.innerWidth - this.offsetWidth - 20;
-            const maxY = window.innerHeight - this.offsetHeight - 20;
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
+            const card = document.querySelector('.card');
+            const cardRect = card.getBoundingClientRect();
+            const btnWidth = this.offsetWidth;
+            const btnHeight = this.offsetHeight;
 
-            this.style.position = 'fixed';
+            const padding = 15;
+            const maxX = card.clientWidth - btnWidth - padding;
+            const maxY = card.clientHeight - btnHeight - padding;
+            const newX = Math.random() * (maxX - padding) + padding;
+            const newY = Math.random() * (maxY - padding) + padding;
+
+            this.style.position = 'absolute';
             this.style.left = newX + 'px';
             this.style.top = newY + 'px';
             this.style.zIndex = '9999';
-            this.style.transition = 'all 0.2s ease';
+            this.style.transition = 'all 0.15s ease';
+        });
+
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
         });
 
         // Respuesta SÍ
